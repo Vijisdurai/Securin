@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CPE Entries</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #fdfdfd; }
+        h1 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f9f9f9; }
+        .pagination a {
+            margin: 5px;
+            text-decoration: none;
+            padding: 5px 10px;
+            background-color: #eee;
+            color: #333;
+            border-radius: 4px;
+        }
+        .pagination a:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>CPE Entries</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>CPE 22 URI</th>
+            <th>CPE 23 URI</th>
+            <th>Reference Links</th>
+            <th>Deprecation Date (CPE 22)</th>
+            <th>Deprecation Date (CPE 23)</th>
+        </tr>
+        {% for r in cpe_entries %}
+        <tr>
+            <td>{{ r[0] }}</td>
+            <td>{{ r[1] }}</td>
+            <td>{{ r[2] }}</td>
+            <td>{{ r[3] }}</td>
+            <td>
+                {% for link in r[4] %}
+                    <div>{{ link }}</div>
+                {% endfor %}
+            </td>
+            <td>{{ r[5] }}</td>
+            <td>{{ r[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div style="margin-top: 20px;" class="pagination">
+        <strong>Total CPE entries:</strong> {{ total_count }}<br>
+        <strong>Page {{ page }} of {{ total_pages }}</strong><br>
+        {% if page > 1 %}
+            <a href="{{ request.path }}?page=1&limit={{ limit }}">First</a>
+            <a href="{{ request.path }}?page={{ page - 1 }}&limit={{ limit }}">Previous</a>
+        {% endif %}
+        {% if page < total_pages %}
+            <a href="{{ request.path }}?page={{ page + 1 }}&limit={{ limit }}">Next</a>
+            <a href="{{ request.path }}?page={{ total_pages }}&limit={{ limit }}">Last</a>
+        {% endif %}
+    </div>
+</body>
+</html>
